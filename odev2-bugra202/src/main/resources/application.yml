@@ -1,0 +1,17 @@
+spring.datasource:
+  driverClassName: org.postgresql.Driver
+  url: jdbc:postgresql://localhost:5432/PATIKA
+  username: postgres
+  password: 12345
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    open-in-view: false
+    generate-ddl: true
+logging:
+  level:
+    sql: debug
