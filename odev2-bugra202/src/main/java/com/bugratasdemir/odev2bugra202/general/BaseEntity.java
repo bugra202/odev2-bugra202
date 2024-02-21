@@ -1,9 +1,8 @@
 package com.bugratasdemir.odev2bugra202.general;
 
-import jakarta.persistence.Embedded;
-import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
 import lombok.Setter;
+import javax.persistence.*;
 
 @MappedSuperclass
 @Getter

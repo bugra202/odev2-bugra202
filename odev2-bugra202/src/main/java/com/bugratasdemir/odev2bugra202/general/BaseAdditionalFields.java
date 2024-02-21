@@ -1,9 +1,9 @@
 package com.bugratasdemir.odev2bugra202.general;
 
-import jakarta.persistence.Embeddable;
 import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
+import javax.persistence.Embeddable;
 
 @Embeddable
 @Getter
