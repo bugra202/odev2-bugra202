@@ -22,7 +22,6 @@ public abstract class BaseEntityService<E extends BaseEntity, R extends JpaRepos
         if (baseAdditionalFields == null) {
             baseAdditionalFields = new BaseAdditionalFields();
         }
-
         LocalDateTime now = LocalDateTime.now();
         if (entity.getId() == null) {
             // yeni kayıt

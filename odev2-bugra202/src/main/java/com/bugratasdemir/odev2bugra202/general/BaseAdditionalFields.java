@@ -3,7 +3,7 @@ package com.bugratasdemir.odev2bugra202.general;
 import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
-import javax.persistence.Embeddable;
+import jakarta.persistence.Embeddable;
 
 @Embeddable
 @Getter
