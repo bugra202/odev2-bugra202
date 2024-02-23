@@ -12,6 +12,4 @@ public class BaseAdditionalFields {
 
     private LocalDateTime createDate;
     private LocalDateTime updateDate;
-    private Long creatorId;
-    private Long updaterId;
 }

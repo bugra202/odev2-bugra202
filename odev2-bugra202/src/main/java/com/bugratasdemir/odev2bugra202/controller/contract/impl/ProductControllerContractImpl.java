@@ -5,8 +5,6 @@ import com.bugratasdemir.odev2bugra202.dto.ProductDTO;
 import com.bugratasdemir.odev2bugra202.entity.Product;
 import com.bugratasdemir.odev2bugra202.enums.ProductStatus;
 import com.bugratasdemir.odev2bugra202.mapper.ProductMapper;
-import com.bugratasdemir.odev2bugra202.request.ProductActivateRequest;
-import com.bugratasdemir.odev2bugra202.request.ProductDeactivateRequest;
 import com.bugratasdemir.odev2bugra202.request.ProductSaveRequest;
 import com.bugratasdemir.odev2bugra202.request.ProductUpdatePriceRequest;
 import com.bugratasdemir.odev2bugra202.service.ProductEntityService;
@@ -82,10 +80,11 @@ public class ProductControllerContractImpl implements ProductControllerContract 
     }
 
     @Override
-    public ProductDTO activate(Long id, ProductActivateRequest request) {
+    public ProductDTO activate(Long id) {
+
         Product product = productEntityService.findByIdWithControl(id);
 
-        product.setStatus(request.status());
+        product.setStatus(ProductStatus.ACTIVE);
 
         productEntityService.save(product);
 
@@ -94,10 +93,10 @@ public class ProductControllerContractImpl implements ProductControllerContract 
     }
 
     @Override
-    public ProductDTO deactivate(Long id, ProductDeactivateRequest request) {
+    public ProductDTO deactivate(Long id) {
         Product product = productEntityService.findByIdWithControl(id);
 
-        product.setStatus(request.status());
+        product.setStatus(ProductStatus.PASSIVE);
 
         productEntityService.save(product);
 

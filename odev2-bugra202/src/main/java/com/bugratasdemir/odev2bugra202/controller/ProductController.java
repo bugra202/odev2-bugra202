@@ -4,8 +4,6 @@ package com.bugratasdemir.odev2bugra202.controller;
 import com.bugratasdemir.odev2bugra202.controller.contract.ProductControllerContract;
 import com.bugratasdemir.odev2bugra202.dto.ProductDTO;
 import com.bugratasdemir.odev2bugra202.general.RestResponse;
-import com.bugratasdemir.odev2bugra202.request.ProductActivateRequest;
-import com.bugratasdemir.odev2bugra202.request.ProductDeactivateRequest;
 import com.bugratasdemir.odev2bugra202.request.ProductSaveRequest;
 import com.bugratasdemir.odev2bugra202.request.ProductUpdatePriceRequest;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +32,10 @@ public class ProductController {
     @GetMapping("/{id}")
     public ResponseEntity<RestResponse<ProductDTO>> findById(@PathVariable Long id){
         ProductDTO productDTO = productControllerContract.findById(id);
-        return ResponseEntity.ok(RestResponse.of(productDTO));
+        if (productDTO != null){
+            return ResponseEntity.ok(RestResponse.of(productDTO));
+        }else
+            return ResponseEntity.ok(RestResponse.empty());
     }
     @GetMapping("/category/{id}")
     public ResponseEntity<RestResponse<ProductDTO>> findByCategoryId(@PathVariable Long id){
@@ -47,14 +48,13 @@ public class ProductController {
         return ResponseEntity.ok(RestResponse.of(productDTO));
     }
     @PatchMapping("/{id}/activate")
-    public ResponseEntity<RestResponse<ProductDTO>> activate(@PathVariable Long id, @RequestBody ProductActivateRequest request){
-        ProductDTO productDTO = productControllerContract.activate(id,request);
+    public ResponseEntity<RestResponse<ProductDTO>> activate(@PathVariable Long id){
+        ProductDTO productDTO = productControllerContract.activate(id);
         return ResponseEntity.ok(RestResponse.of(productDTO));
     }
     @PatchMapping("/{id}/deactivate")
-    public ResponseEntity<RestResponse<ProductDTO>> deactivate(@PathVariable Long id, @RequestBody ProductDeactivateRequest request){
-        ProductDTO productDTO = productControllerContract.deactivate(id,request);
+    public ResponseEntity<RestResponse<ProductDTO>> deactivate(@PathVariable Long id){
+        ProductDTO productDTO = productControllerContract.deactivate(id);
         return ResponseEntity.ok(RestResponse.of(productDTO));
     }
 }
-

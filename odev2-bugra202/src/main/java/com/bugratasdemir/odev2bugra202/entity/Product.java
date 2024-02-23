@@ -2,9 +2,9 @@ package com.bugratasdemir.odev2bugra202.entity;
 
 import com.bugratasdemir.odev2bugra202.enums.ProductStatus;
 import com.bugratasdemir.odev2bugra202.general.BaseEntity;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import javax.persistence.*;
 import java.time.LocalDateTime;
 
 
@@ -37,7 +37,7 @@ public class Product extends BaseEntity {
     private ProductStatus status;
 
     @JoinColumn(name = "CATEGORY_ID",referencedColumnName = "ID",nullable = false)
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Category category;
 
 
