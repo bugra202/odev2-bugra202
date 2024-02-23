@@ -41,18 +41,19 @@ public abstract class BaseEntityService<E extends BaseEntity, R extends JpaRepos
         return repository.findAll();
     }
 
-//    public E findByIdWithControl(Long id) {
-//        Optional<E> optionalE = repository.findById(id);
-//        E entity;
-//        if (optionalE.isPresent()) {
-//            entity = optionalE.get();
-//        } else {
-//            throw new ItemNotFoundException(GeneralErrorMessage.ITEM_NOT_FOUND);
-//            //throw new ItemNotFoundException("Data bulunamadı!");
-//        }
-//
-//        return entity;
-//    }
+    public E findByIdWithControl(Long id) {
+        Optional<E> optionalE = repository.findById(id);
+        E entity;
+        if (optionalE.isPresent()) {
+            entity = optionalE.get();
+        } else {
+           // throw new ItemNotFoundException(GeneralErrorMessage.ITEM_NOT_FOUND);
+            throw new RuntimeException();
+            //throw new ItemNotFoundException("Data bulunamadı!");
+        }
+
+        return entity;
+    }
 
     public Optional<E> findById(Long id){
         return repository.findById(id);

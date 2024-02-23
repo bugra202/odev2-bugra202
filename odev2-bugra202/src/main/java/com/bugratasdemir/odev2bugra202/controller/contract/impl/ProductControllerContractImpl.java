@@ -3,6 +3,7 @@ package com.bugratasdemir.odev2bugra202.controller.contract.impl;
 import com.bugratasdemir.odev2bugra202.controller.contract.ProductControllerContract;
 import com.bugratasdemir.odev2bugra202.dto.ProductDTO;
 import com.bugratasdemir.odev2bugra202.entity.Product;
+import com.bugratasdemir.odev2bugra202.enums.ProductStatus;
 import com.bugratasdemir.odev2bugra202.mapper.ProductMapper;
 import com.bugratasdemir.odev2bugra202.request.ProductSaveRequest;
 import com.bugratasdemir.odev2bugra202.service.ProductEntityService;
@@ -17,7 +18,7 @@ import java.util.stream.Collectors;
 public class ProductControllerContractImpl implements ProductControllerContract {
 
     private final ProductEntityService productEntityService;
-    @Override
+
     public ProductDTO save(ProductSaveRequest request) {
 
         Product product = ProductMapper.INSTANCE.convertToProduct(request);
@@ -29,7 +30,7 @@ public class ProductControllerContractImpl implements ProductControllerContract 
         return productDTO;
     }
     @Override
-    public List<ProductDTO> getAllProducts() {
+    public List<ProductDTO> findAll() {
 
         List<Product> productList = productEntityService.findAll();
 
@@ -40,5 +41,30 @@ public class ProductControllerContractImpl implements ProductControllerContract 
         List<ProductDTO> productDTOList = ProductMapper.INSTANCE.convertToProductDTOs(activeProducts);
 
         return productDTOList;
+    }
+
+    @Override
+    public ProductDTO findById(Long id) {
+
+        Product product = productEntityService.findByIdWithControl(id);
+
+        if (product.getStatus().equals(ProductStatus.ACTIVE)){
+            return ProductMapper.INSTANCE.convertToProductDTO(product);
+        }
+
+        return null;
+    }
+    @Override
+    public ProductDTO findByCategoryId(Long id) {
+
+        Product product = productEntityService.findByCategoryId(id);
+
+        //List<Product> productList = productEntityService.findByStatus(ProductStatus.ACTIVE);
+
+        if (product.getStatus().equals(ProductStatus.ACTIVE)){
+            return ProductMapper.INSTANCE.convertToProductDTO(product);
+        }
+
+        return null;
     }
 }
