@@ -36,7 +36,7 @@ public class Product extends BaseEntity {
     @Column(name = "STATUS",length = 30,nullable = false)
     private ProductStatus status;
 
-    @JoinColumn(name = "CATEGORY_ID",referencedColumnName = "ID")
+    @JoinColumn(name = "CATEGORY_ID",referencedColumnName = "ID",nullable = false)
     @OneToOne(fetch = FetchType.LAZY)
     private Category category;
 

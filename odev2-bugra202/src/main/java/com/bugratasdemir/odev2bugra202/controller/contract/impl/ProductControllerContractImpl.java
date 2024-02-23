@@ -5,7 +5,10 @@ import com.bugratasdemir.odev2bugra202.dto.ProductDTO;
 import com.bugratasdemir.odev2bugra202.entity.Product;
 import com.bugratasdemir.odev2bugra202.enums.ProductStatus;
 import com.bugratasdemir.odev2bugra202.mapper.ProductMapper;
+import com.bugratasdemir.odev2bugra202.request.ProductActivateRequest;
+import com.bugratasdemir.odev2bugra202.request.ProductDeactivateRequest;
 import com.bugratasdemir.odev2bugra202.request.ProductSaveRequest;
+import com.bugratasdemir.odev2bugra202.request.ProductUpdatePriceRequest;
 import com.bugratasdemir.odev2bugra202.service.ProductEntityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -42,7 +45,6 @@ public class ProductControllerContractImpl implements ProductControllerContract 
 
         return productDTOList;
     }
-
     @Override
     public ProductDTO findById(Long id) {
 
@@ -66,5 +68,39 @@ public class ProductControllerContractImpl implements ProductControllerContract 
         }
 
         return null;
+    }
+    @Override
+    public ProductDTO updatePrice(Long id, ProductUpdatePriceRequest request) {
+        Product product = productEntityService.findByIdWithControl(id);
+
+        product.setPrice(request.price());
+
+        productEntityService.save(product);
+
+        return ProductMapper.INSTANCE.convertToProductDTO(product);
+
+    }
+
+    @Override
+    public ProductDTO activate(Long id, ProductActivateRequest request) {
+        Product product = productEntityService.findByIdWithControl(id);
+
+        product.setStatus(request.status());
+
+        productEntityService.save(product);
+
+        return ProductMapper.INSTANCE.convertToProductDTO(product);
+
+    }
+
+    @Override
+    public ProductDTO deactivate(Long id, ProductDeactivateRequest request) {
+        Product product = productEntityService.findByIdWithControl(id);
+
+        product.setStatus(request.status());
+
+        productEntityService.save(product);
+
+        return ProductMapper.INSTANCE.convertToProductDTO(product);
     }
 }
