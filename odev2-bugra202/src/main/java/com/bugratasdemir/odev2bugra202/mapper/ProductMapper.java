@@ -13,5 +13,6 @@ public interface ProductMapper {
     ProductMapper INSTANCE = Mappers.getMapper(ProductMapper.class);
     ProductDTO convertToProductDTO(Product product);
     List<ProductDTO> convertToProductDTOs(List<Product> product);
+    @Mapping(target = "status",constant = "ACTIVE")
     Product convertToProduct(ProductSaveRequest request);
 }

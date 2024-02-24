@@ -13,7 +13,6 @@ public class ProductEntityService extends BaseEntityService<Product, ProductRepo
     protected ProductEntityService(ProductRepository repository) {
         super(repository);
     }
-
     public Product findByCategoryId(Long id){
         return getRepository().findProductByCategory_Id(id);
     }

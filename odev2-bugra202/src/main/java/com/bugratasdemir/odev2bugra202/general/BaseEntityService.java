@@ -1,8 +1,9 @@
 package com.bugratasdemir.odev2bugra202.general;
 
+import com.bugratasdemir.odev2bugra202.errormessage.GeneralErrorMessage;
+import com.bugratasdemir.odev2bugra202.exceptions.ItemNotFoundException;
 import lombok.Getter;
 import org.springframework.data.jpa.repository.JpaRepository;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -24,13 +25,10 @@ public abstract class BaseEntityService<E extends BaseEntity, R extends JpaRepos
         }
         LocalDateTime now = LocalDateTime.now();
         if (entity.getId() == null) {
-            // yeni kayıt
             baseAdditionalFields.setCreateDate(now);
-            //entity.getBaseAdditionalFields().setCreatorId();
         }
 
         baseAdditionalFields.setUpdateDate(now);
-        //entity.getBaseAdditionalFields().setUpdaterId();
         entity.setBaseAdditionalFields(baseAdditionalFields);
 
         entity = repository.save(entity);
@@ -47,26 +45,20 @@ public abstract class BaseEntityService<E extends BaseEntity, R extends JpaRepos
         if (optionalE.isPresent()) {
             entity = optionalE.get();
         } else {
-           // throw new ItemNotFoundException(GeneralErrorMessage.ITEM_NOT_FOUND);
-            throw new RuntimeException();
-            //throw new ItemNotFoundException("Data bulunamadı!");
+            throw new ItemNotFoundException(GeneralErrorMessage.ITEM_NOT_FOUND);
         }
 
         return entity;
     }
-
     public Optional<E> findById(Long id){
         return repository.findById(id);
     }
-
     public void delete(Long id) {
         repository.deleteById(id);
     }
-
     public void delete(E entity){
         repository.delete(entity);
     }
-
     public boolean existById(Long id){
         return repository.existsById(id);
     }

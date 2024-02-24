@@ -4,6 +4,9 @@ import com.bugratasdemir.odev2bugra202.controller.contract.ProductControllerCont
 import com.bugratasdemir.odev2bugra202.dto.ProductDTO;
 import com.bugratasdemir.odev2bugra202.entity.Product;
 import com.bugratasdemir.odev2bugra202.enums.ProductStatus;
+import com.bugratasdemir.odev2bugra202.errormessage.BaseErrorMessage;
+import com.bugratasdemir.odev2bugra202.errormessage.GeneralErrorMessage;
+import com.bugratasdemir.odev2bugra202.general.BusinessException;
 import com.bugratasdemir.odev2bugra202.mapper.ProductMapper;
 import com.bugratasdemir.odev2bugra202.request.ProductSaveRequest;
 import com.bugratasdemir.odev2bugra202.request.ProductUpdatePriceRequest;
@@ -46,7 +49,8 @@ public class ProductControllerContractImpl implements ProductControllerContract 
     @Override
     public ProductDTO findById(Long id) {
 
-        Product product = productEntityService.findByIdWithControl(id);
+        //Product product = productEntityService.findByIdWithControl(id);
+        Product product = productEntityService.findById(id).orElseThrow(() -> BusinessException.builder().baseErrorMessage(GeneralErrorMessage.ITEM_NOT_FOUND).build());
 
         if (product.getStatus().equals(ProductStatus.ACTIVE)){
             return ProductMapper.INSTANCE.convertToProductDTO(product);
