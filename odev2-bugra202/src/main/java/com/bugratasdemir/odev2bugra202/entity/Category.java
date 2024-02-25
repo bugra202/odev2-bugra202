@@ -19,4 +19,7 @@ public class Category extends BaseEntity {
 
     @Column(name = "NAME",length = 200,nullable = false)
     private String name;
+
+    @Version
+    private Long version;
 }

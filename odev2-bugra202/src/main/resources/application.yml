@@ -15,3 +15,5 @@ spring:
 logging:
   level:
     sql: debug
+    org:
+      springframework: error

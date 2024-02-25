@@ -5,22 +5,18 @@ import com.bugratasdemir.odev2bugra202.dto.ProductDTO;
 import com.bugratasdemir.odev2bugra202.entity.Category;
 import com.bugratasdemir.odev2bugra202.entity.Product;
 import com.bugratasdemir.odev2bugra202.enums.ProductStatus;
-import com.bugratasdemir.odev2bugra202.errormessage.BaseErrorMessage;
-import com.bugratasdemir.odev2bugra202.errormessage.GeneralErrorMessage;
-import com.bugratasdemir.odev2bugra202.general.BusinessException;
 import com.bugratasdemir.odev2bugra202.mapper.ProductMapper;
 import com.bugratasdemir.odev2bugra202.request.ProductBatchUpdatePriceRequest;
 import com.bugratasdemir.odev2bugra202.request.ProductSaveRequest;
 import com.bugratasdemir.odev2bugra202.request.ProductUpdatePriceRequest;
 import com.bugratasdemir.odev2bugra202.service.CategoryEntityService;
 import com.bugratasdemir.odev2bugra202.service.ProductEntityService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -90,6 +86,7 @@ public class ProductControllerContractImpl implements ProductControllerContract 
     }
 
     @Override
+    @Transactional
     public List<ProductDTO> batchUpdatePrice(ProductBatchUpdatePriceRequest request) {
 
         return request.id().stream()
