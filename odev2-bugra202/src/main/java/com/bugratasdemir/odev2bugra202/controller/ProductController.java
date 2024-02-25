@@ -61,7 +61,10 @@ public class ProductController {
     @PatchMapping("/{id}/price")
     public ResponseEntity<RestResponse<ProductDTO>> updatePrice(@PathVariable Long id, @RequestBody ProductUpdatePriceRequest request){
         ProductDTO productDTO = productControllerContract.updatePrice(id,request);
-        return ResponseEntity.ok(RestResponse.of(productDTO));
+        if (productDTO != null){
+            return ResponseEntity.ok(RestResponse.of(productDTO));
+        }else
+            return ResponseEntity.ok(RestResponse.empty());
     }
     @PatchMapping("/{id}/batchPrice")
     public ResponseEntity<RestResponse<List<ProductDTO>>> updateBatchPrice(@RequestBody ProductBatchUpdatePriceRequest request){

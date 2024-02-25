@@ -76,28 +76,31 @@ public class ProductControllerContractImpl implements ProductControllerContract 
     }
     @Override
     public ProductDTO updatePrice(Long id, ProductUpdatePriceRequest request) {
+
         Product product = productEntityService.findByIdWithControl(id);
 
-        product.setPrice(request.price());
+        if(product.getStatus().equals(ProductStatus.ACTIVE)){
+            product.setPrice(request.price());
 
-        productEntityService.save(product);
+            productEntityService.save(product);
 
-        return ProductMapper.INSTANCE.convertToProductDTO(product);
-
+            return ProductMapper.INSTANCE.convertToProductDTO(product);
+        }
+        return null;
     }
 
     @Override
     public List<ProductDTO> batchUpdatePrice(ProductBatchUpdatePriceRequest request) {
 
-        List<Product> products = productEntityService.findByListIdWithControl(request.id());
-
-        List<Product> updatedProducts = products.stream()
-                .peek(product -> product.setPrice(request.price()))
+        return request.id().stream()
+                .map(productEntityService::findByIdWithControl)
+                .filter(product -> product.getStatus() == ProductStatus.ACTIVE)
+                .peek(product -> {
+                    product.setPrice(request.price());
+                    productEntityService.save(product);
+                })
+                .map(ProductMapper.INSTANCE::convertToProductDTO)
                 .toList();
-
-        productEntityService.saveAll(updatedProducts);
-
-        return  ProductMapper.INSTANCE.convertToProductDTOs(updatedProducts);
     }
     @Override
     public ProductDTO activate(Long id) {
