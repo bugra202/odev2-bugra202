@@ -10,4 +10,4 @@ public record ProductDTO(Long id,
                          LocalDateTime expirationDate,
                          String description,
                          ProductStatus status,
-                         Category category) {}
+                         Long category_id) {}

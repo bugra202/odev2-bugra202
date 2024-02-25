@@ -15,23 +15,4 @@ public class BusinessException extends RuntimeException{
 
     private final BaseErrorMessage baseErrorMessage;
 
-    public static BusinessExceptionBuilder builder() {
-        return new BusinessExceptionBuilder();
-    }
-
-    public static class BusinessExceptionBuilder {
-        private BaseErrorMessage baseErrorMessage;
-        BusinessExceptionBuilder() {
-        }
-        public BusinessException build() {
-            return new BusinessException(this.baseErrorMessage);
-        }
-        public BusinessExceptionBuilder baseErrorMessage(final BaseErrorMessage baseErrorMessage) {
-            this.baseErrorMessage = baseErrorMessage;
-            return this;
-        }
-        public String toString() {
-            return "BusinessException.BusinessExceptionBuilder(hataTipi=" + this.baseErrorMessage + ")";
-        }
-    }
 }

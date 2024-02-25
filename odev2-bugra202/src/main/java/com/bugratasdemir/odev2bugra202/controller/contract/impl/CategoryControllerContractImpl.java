@@ -8,7 +8,6 @@ import com.bugratasdemir.odev2bugra202.request.CategorySaveRequest;
 import com.bugratasdemir.odev2bugra202.service.CategoryEntityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -47,6 +46,6 @@ public class CategoryControllerContractImpl implements CategoryControllerContrac
     }
     @Override
     public void delete(Long id) {
-        categoryEntityService.delete(id); // delete için olmayan id verdiğimde expection yer mi ?
+        categoryEntityService.delete(id);
     }
 }

@@ -8,4 +8,4 @@ public record ProductSaveRequest(String name,
                                  Double price,
                                  LocalDateTime expirationDate,
                                  String description,
-                                 Category category) {}
+                                 Long category_id) {}

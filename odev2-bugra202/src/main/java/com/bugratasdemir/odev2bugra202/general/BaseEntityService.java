@@ -12,11 +12,9 @@ import java.util.Optional;
 public abstract class BaseEntityService<E extends BaseEntity, R extends JpaRepository<E, Long>> {
 
     private final R repository;
-
     protected BaseEntityService(R repository) {
         this.repository = repository;
     }
-
     public E save(E entity) {
 
         BaseAdditionalFields baseAdditionalFields = entity.getBaseAdditionalFields();
@@ -34,16 +32,27 @@ public abstract class BaseEntityService<E extends BaseEntity, R extends JpaRepos
         entity = repository.save(entity);
         return entity;
     }
-
+    public void saveAll(List<E> entity) {
+        repository.saveAll(entity);
+    }
     public List<E> findAll() {
         return repository.findAll();
     }
-
     public E findByIdWithControl(Long id) {
         Optional<E> optionalE = repository.findById(id);
         E entity;
         if (optionalE.isPresent()) {
             entity = optionalE.get();
+        } else {
+            throw new ItemNotFoundException(GeneralErrorMessage.ITEM_NOT_FOUND);
+        }
+        return entity;
+    }
+    public List<E> findByListIdWithControl(List<Long> id) {
+        List<E> all = repository.findAllById(id);
+        List<E> entity;
+        if (!all.isEmpty()) {
+            entity = all;
         } else {
             throw new ItemNotFoundException(GeneralErrorMessage.ITEM_NOT_FOUND);
         }

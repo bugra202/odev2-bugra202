@@ -39,5 +39,4 @@ public class Product extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private Category category;
 
-
 }

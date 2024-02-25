@@ -2,19 +2,24 @@ package com.bugratasdemir.odev2bugra202.controller.contract.impl;
 
 import com.bugratasdemir.odev2bugra202.controller.contract.ProductControllerContract;
 import com.bugratasdemir.odev2bugra202.dto.ProductDTO;
+import com.bugratasdemir.odev2bugra202.entity.Category;
 import com.bugratasdemir.odev2bugra202.entity.Product;
 import com.bugratasdemir.odev2bugra202.enums.ProductStatus;
 import com.bugratasdemir.odev2bugra202.errormessage.BaseErrorMessage;
 import com.bugratasdemir.odev2bugra202.errormessage.GeneralErrorMessage;
 import com.bugratasdemir.odev2bugra202.general.BusinessException;
 import com.bugratasdemir.odev2bugra202.mapper.ProductMapper;
+import com.bugratasdemir.odev2bugra202.request.ProductBatchUpdatePriceRequest;
 import com.bugratasdemir.odev2bugra202.request.ProductSaveRequest;
 import com.bugratasdemir.odev2bugra202.request.ProductUpdatePriceRequest;
+import com.bugratasdemir.odev2bugra202.service.CategoryEntityService;
 import com.bugratasdemir.odev2bugra202.service.ProductEntityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -22,35 +27,39 @@ import java.util.stream.Collectors;
 public class ProductControllerContractImpl implements ProductControllerContract {
 
     private final ProductEntityService productEntityService;
+    private final CategoryEntityService categoryEntityService;
 
     public ProductDTO save(ProductSaveRequest request) {
 
         Product product = ProductMapper.INSTANCE.convertToProduct(request);
 
+        Category category = categoryEntityService.findByIdWithControl(request.category_id());
+
+        product.setCategory(category);
+
         product = productEntityService.save(product);
 
-        ProductDTO productDTO = ProductMapper.INSTANCE.convertToProductDTO(product);
-
-        return productDTO;
+        return ProductMapper.INSTANCE.convertToProductDTO(product);
     }
     @Override
     public List<ProductDTO> findAll() {
 
-        List<Product> productList = productEntityService.findAll();
+        List<Product> productList = productEntityService.findAllAndStatusActive(ProductStatus.ACTIVE);
 
-        List<Product> activeProducts = productList.stream()
-                .filter(product -> "Active".equals(product.getStatus().getStringValue()))
-                .collect(Collectors.toList());
+        return ProductMapper.INSTANCE.convertToProductDTOs(productList);
+    }
+    @Override
+    public List<ProductDTO> findAllByExpirationDateLE(LocalDateTime dateTime) {
 
-        List<ProductDTO> productDTOList = ProductMapper.INSTANCE.convertToProductDTOs(activeProducts);
+        List<Product> productList = productEntityService.findAllByExpirationDateLE(dateTime, ProductStatus.ACTIVE);
 
-        return productDTOList;
+        return ProductMapper.INSTANCE.convertToProductDTOs(productList);
+
     }
     @Override
     public ProductDTO findById(Long id) {
 
-        //Product product = productEntityService.findByIdWithControl(id);
-        Product product = productEntityService.findById(id).orElseThrow(() -> BusinessException.builder().baseErrorMessage(GeneralErrorMessage.ITEM_NOT_FOUND).build());
+        Product product = productEntityService.findByIdWithControl(id);
 
         if (product.getStatus().equals(ProductStatus.ACTIVE)){
             return ProductMapper.INSTANCE.convertToProductDTO(product);
@@ -63,13 +72,7 @@ public class ProductControllerContractImpl implements ProductControllerContract 
 
         Product product = productEntityService.findByCategoryId(id);
 
-        //List<Product> productList = productEntityService.findByStatus(ProductStatus.ACTIVE);
-
-        if (product.getStatus().equals(ProductStatus.ACTIVE)){
-            return ProductMapper.INSTANCE.convertToProductDTO(product);
-        }
-
-        return null;
+        return ProductMapper.INSTANCE.convertToProductDTO(product);
     }
     @Override
     public ProductDTO updatePrice(Long id, ProductUpdatePriceRequest request) {
@@ -84,6 +87,19 @@ public class ProductControllerContractImpl implements ProductControllerContract 
     }
 
     @Override
+    public List<ProductDTO> batchUpdatePrice(ProductBatchUpdatePriceRequest request) {
+
+        List<Product> products = productEntityService.findByListIdWithControl(request.id());
+
+        List<Product> updatedProducts = products.stream()
+                .peek(product -> product.setPrice(request.price()))
+                .toList();
+
+        productEntityService.saveAll(updatedProducts);
+
+        return  ProductMapper.INSTANCE.convertToProductDTOs(updatedProducts);
+    }
+    @Override
     public ProductDTO activate(Long id) {
 
         Product product = productEntityService.findByIdWithControl(id);
@@ -95,9 +111,9 @@ public class ProductControllerContractImpl implements ProductControllerContract 
         return ProductMapper.INSTANCE.convertToProductDTO(product);
 
     }
-
     @Override
     public ProductDTO deactivate(Long id) {
+
         Product product = productEntityService.findByIdWithControl(id);
 
         product.setStatus(ProductStatus.PASSIVE);

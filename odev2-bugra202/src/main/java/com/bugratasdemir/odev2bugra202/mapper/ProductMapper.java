@@ -1,6 +1,7 @@
 package com.bugratasdemir.odev2bugra202.mapper;
 
 import com.bugratasdemir.odev2bugra202.dto.ProductDTO;
+import com.bugratasdemir.odev2bugra202.entity.Category;
 import com.bugratasdemir.odev2bugra202.entity.Product;
 import com.bugratasdemir.odev2bugra202.request.ProductSaveRequest;
 import org.mapstruct.*;
@@ -14,5 +15,9 @@ public interface ProductMapper {
     ProductDTO convertToProductDTO(Product product);
     List<ProductDTO> convertToProductDTOs(List<Product> product);
     @Mapping(target = "status",constant = "ACTIVE")
+    @Mapping(target = "category", source = "category_id",qualifiedByName = "mapCategoryIdToCategory")
     Product convertToProduct(ProductSaveRequest request);
+    @Mapping(target = "id", source = "category_id")
+    @Named("mapCategoryIdToCategory")
+    Category mapCategoryIdToCategory(Long category_id);
 }
