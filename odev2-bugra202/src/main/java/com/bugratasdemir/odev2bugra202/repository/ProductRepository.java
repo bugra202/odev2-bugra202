@@ -11,9 +11,6 @@ import java.util.List;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
     Product findByCategory_idAndStatus(Long id,ProductStatus status);
-    List<Product> findByStatus(ProductStatus status);
     List<Product> findProductByExpirationDateIsLessThanEqualAndStatus(LocalDateTime localDateTime, ProductStatus status);
     List<Product> findProductByStatus(ProductStatus status);
-    Product findByIdAndStatus(Long id,ProductStatus status);
-
 }

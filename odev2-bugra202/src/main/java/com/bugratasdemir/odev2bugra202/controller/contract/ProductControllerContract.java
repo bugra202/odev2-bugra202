@@ -4,7 +4,6 @@ import com.bugratasdemir.odev2bugra202.dto.ProductDTO;
 import com.bugratasdemir.odev2bugra202.request.ProductBatchUpdatePriceRequest;
 import com.bugratasdemir.odev2bugra202.request.ProductSaveRequest;
 import com.bugratasdemir.odev2bugra202.request.ProductUpdatePriceRequest;
-
 import java.time.LocalDateTime;
 import java.util.List;
 

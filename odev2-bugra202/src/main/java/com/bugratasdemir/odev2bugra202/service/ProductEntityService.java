@@ -17,16 +17,11 @@ public class ProductEntityService extends BaseEntityService<Product, ProductRepo
     public Product findByCategoryId(Long id){
         return getRepository().findByCategory_idAndStatus(id,ProductStatus.ACTIVE);
     }
-    public List<Product> findByStatus(ProductStatus status){
-        return getRepository().findByStatus(status);
-    }
     public List<Product> findAllByExpirationDateLE(LocalDateTime localDateTime, ProductStatus status){
         return getRepository().findProductByExpirationDateIsLessThanEqualAndStatus(localDateTime, status);
     }
     public List<Product> findAllAndStatusActive(ProductStatus status){
         return getRepository().findProductByStatus(status);
     }
-    public Product findByIdAndStatus(Long id,ProductStatus status){
-        return getRepository().findByIdAndStatus(id,status);
-    }
+
 }

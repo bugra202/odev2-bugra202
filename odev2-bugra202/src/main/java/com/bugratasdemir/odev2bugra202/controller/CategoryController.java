@@ -32,5 +32,9 @@ public class CategoryController {
         CategoryDTO categoryDTO = categoryControllerContract.findById(id);
         return ResponseEntity.ok(RestResponse.of(categoryDTO));
     }
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Long id){
+        categoryControllerContract.delete(id);
+    }
 
 }
