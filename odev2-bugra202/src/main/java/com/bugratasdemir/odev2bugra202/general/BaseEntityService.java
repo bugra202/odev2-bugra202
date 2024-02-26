@@ -48,17 +48,6 @@ public abstract class BaseEntityService<E extends BaseEntity, R extends JpaRepos
         }
         return entity;
     }
-    public List<E> findByListIdWithControl(List<Long> id) {
-        List<E> all = repository.findAllById(id);
-        List<E> entity;
-        if (!all.isEmpty()) {
-            entity = all;
-        } else {
-            throw new ItemNotFoundException(GeneralErrorMessage.ITEM_NOT_FOUND);
-        }
-
-        return entity;
-    }
     public Optional<E> findById(Long id){
         return repository.findById(id);
     }
